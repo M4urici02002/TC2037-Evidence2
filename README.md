@@ -16,6 +16,7 @@ A grammar includes a set of rules from which we can derive strings. These rules 
 
 Here is a very simple example of a grammar to generate the string "the dog saw a man in the park": 
 
+```mathematica
 S -> NP VP
 NP -> Det N | Det N PP
 PP -> P NP
@@ -24,7 +25,7 @@ Det -> 'the' | 'a'
 N -> 'man' | 'dog' | 'park'
 P -> 'in' | 'with'
 V -> 'saw' | 'ate' | 'walked'
-
+```
 
 
 ### Terminal Elements:
