@@ -104,7 +104,6 @@ import nltk
 from nltk import CFG
 
 # Define a context-free grammar using a multiline string.
-# The rules define the structure of sentences in Spanish based on components such as noun phrases (NP), verb phrases (VP), etc.
 grammar = CFG.fromstring("""
   S -> 'NP' 'VP' S'
   S' -> 'Conj' 'NP' 'VP' S' | ''
