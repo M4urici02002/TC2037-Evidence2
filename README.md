@@ -97,3 +97,52 @@ Invalid strings might include:
 - "Ella cree rápidamente." (Semantic mismatch)
 
 
+
+```python
+# Import the nltk module and CFG class for working with context-free grammars
+import nltk
+from nltk import CFG
+
+# Define a context-free grammar using a multiline string.
+# The rules define the structure of sentences in Spanish based on components such as noun phrases (NP), verb phrases (VP), etc.
+grammar = CFG.fromstring("""
+  S -> 'NP' 'VP' S'
+  S' -> 'Conj' 'NP' 'VP' S' | ''
+  NP -> 'Det' 'N' | 'Det' 'AP' 'N' | 'Pron' | 'NP' 'PP' | 'NP' 'Conj' 'NP'
+  VP -> 'V' | 'V' 'NP' | 'V' 'PP' | 'VP' 'Conj' 'VP'
+  PP -> 'P' 'NP'
+  AP -> 'Adj' | 'Adj' 'AP'
+  Det -> 'el' | 'la' | 'los' | 'las' | 'un' | 'una'
+  N -> 'niño' | 'niña' | 'libro' | 'ciudad'
+  P -> 'en' | 'sobre' | 'bajo' | 'contra'
+  Pron -> 'él' | 'ella' | 'ellos' | 'ellas' | 'lo' | 'la' | 'le'
+  V -> 'corre' | 'salta' | 'piensa' | 'cree' | 'ha'
+  Adj -> 'alegre' | 'triste' | 'grande' | 'pequeño'
+  Adv -> 'rápidamente' | 'lentamente' | 'ayer' | 'hoy'
+  Conj -> 'y' | 'o' | 'pero' | 'porque'
+""")
+
+# Create a parser using the defined grammar
+parser = nltk.ChartParser(grammar)
+
+# List of sentences to parse and validate against the grammar
+sentences = [
+    "El niño alegre corre rápidamente",
+    "Ella cree que la ciudad grande es hermosa",
+    "Él y ella están en la ciudad",
+    "Corre el niño rápidamente"
+]
+
+# Validate sentences using the parser
+for sentence in sentences:
+    parsed = False
+    print("\nTrying to parse:", sentence)
+    # Attempt to parse each sentence and generate parse trees
+    for tree in parser.parse(sentence.split()):
+        print(tree)
+        parsed = True
+    # If no parse trees were generated, the sentence is invalid according to the grammar
+    if not parsed:
+        print("Sentence is invalid.")
+
+```
