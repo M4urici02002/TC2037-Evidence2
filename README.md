@@ -1,16 +1,16 @@
-#TC2037 - Evidence 2
-##Generating and Cleaning a Restricted Context-Free Grammar for Spanish
-###Overview of the Spanish Language
+# TC2037 - Evidence 2
+## Generating and Cleaning a Restricted Context-Free Grammar for Spanish
+### Overview of the Spanish Language
 
 The spanish language is a romance language that is mainly spoken in Spain and in the Americas. Spanish was originated from the a Vulgar Latin of the Roman soldiers on the Iberian peninsula around the the 3rd century A.D. The language is characterized by its subject-verb-object order, although it can be flexible fue to the inflectional systema. This allows various syntactical constructions without loss of clarity. 
 
-###Key Elements of Spanish Syntax
+### Key Elements of Spanish Syntax
 - Nouns: Classified as masculine or feminine, and can be singular or plural (e.g., "el" for masculine singular, "los" for masculine plural).
 - Adjectives: Must agree with the nouns they describe in terms of gender and number and usually follow the nouns.
 - Prepositions: Utilized to express relationships such as location, direction, or time (e.g., "a", "ante", "bajo").
 - Sentence Structure: Typically uses an SVO order but is quite flexible to emphasize different parts of the sentence.
 
-###Grammar Specifications
+### Grammar Specifications
 
 A grammar includes a set of rules from which we can derive strings. These rules are effectively statements of logical equivalence of the form: ψ → ω, where ψ and ω are strings.
 
@@ -27,7 +27,7 @@ V -> 'saw' | 'ate' | 'walked'
 
 
 
-###Terminal Elements:
+### Terminal Elements:
 - Verbs: correr, saltar, comer, jugar.
 - Adjectives: alegre, triste, pequeño, alto.
 - Adverbs: rapidamente, ayer, hoy, mañana.
@@ -35,7 +35,7 @@ V -> 'saw' | 'ate' | 'walked'
 - Prepositions: a, ante, bajo, con, contra.
 - Pronouns: el, ella, los, las, un, una. 
 
-###Non-Terminal Elements
+### Non-Terminal Elements
 These symbols have been expanded to handle more grammatical structures:
 - S (Sentence)
 - NP (Noun Phrase)
@@ -60,14 +60,14 @@ V (Verb) -->  'corre' | 'salta' | 'piensa' | 'cree' | 'ha'
 Adj (Adjective) --> 'alegre' | 'triste' | 'grande' | 'pequeño'
 Adv (Adverb) -->  'rápidamente' | 'lentamente' | 'ayer' | 'hoy'
 
-###Challenges in Grammar
-####Eliminating Ambiguity
+### Challenges in Grammar
+#### Eliminating Ambiguity
 Ambiguity arises when a string has multiple valid parse trees. This is resolved by refining recursive rules and clearly defining the use of adjectives and adverbs.
 
 AP --> Adj | Adj AP
 AdvP --> Adv | Adv AdvP
 
-####Handling Left Recursion
+#### Handling Left Recursion
 Left recursion occurs in a context free grammar when a non-terminal symbol includes itself as the first 
 symbol in one of its productions, potentially leading to infinite recursion during the parsing, which most 
 parsers can't handle. 
