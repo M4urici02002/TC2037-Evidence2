@@ -46,6 +46,7 @@ These symbols have been expanded to handle more grammatical structures:
 - AdvP (Adverb Phrase)
 
 ## Create a grammar that recognizes Spanish language
+```mathematica
 S (Sentence) -->  NP VP | S Conj S | S PP
 NP (Noun Phrase) --> Det N | Det AP N | Pron | NP PP | NP Conj NP
 VP (Verb Phrase) --> V NP | V AP | V AdvP | V PP | VP Conj VP
@@ -60,13 +61,16 @@ Pron (Pronoun) --> 'él' | 'ella' | 'ellos' | 'ellas' | 'lo' | 'la' | 'le'
 V (Verb) -->  'corre' | 'salta' | 'piensa' | 'cree' | 'ha'
 Adj (Adjective) --> 'alegre' | 'triste' | 'grande' | 'pequeño'
 Adv (Adverb) -->  'rápidamente' | 'lentamente' | 'ayer' | 'hoy'
+```
 
 ### Challenges in Grammar
 #### Eliminating Ambiguity
 Ambiguity arises when a string has multiple valid parse trees. This is resolved by refining recursive rules and clearly defining the use of adjectives and adverbs.
 
+```mathematica
 AP --> Adj | Adj AP
 AdvP --> Adv | Adv AdvP
+```
 
 #### Handling Left Recursion
 Left recursion occurs in a context free grammar when a non-terminal symbol includes itself as the first 
@@ -74,21 +78,22 @@ symbol in one of its productions, potentially leading to infinite recursion duri
 parsers can't handle. 
 
 Original:
+```mathematica
 S --> S Conj S | NP VP
-
+```
 Transformed to eliminate left recursion:
-
+```mathematica
 S --> NP VP S' 
 S' --> Conj NP VP S' | ε
-
+```
 Define Acceptable Strings
 The grammar like this should accept strings such as:
-"El niño alegre corre rápidamente."
-"Ella cree que la ciudad grande es hermosa."
-"Él y ella están en la ciudad."
+- "El niño alegre corre rápidamente."
+- "Ella cree que la ciudad grande es hermosa."
+- "Él y ella están en la ciudad."
 
 Invalid strings might include:
-"Corre el niño rápidamente." (Incorrect order)
-"Ella cree rápidamente." (Semantic mismatch)
+- "Corre el niño rápidamente." (Incorrect order)
+- "Ella cree rápidamente." (Semantic mismatch)
 
 
