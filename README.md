@@ -1,6 +1,6 @@
 # TC2037 - Evidence 2
-## Generating and Cleaning a Restricted Context-Free Grammar for Spanish
-### Overview of the Spanish Language
+# Generating and Cleaning a Restricted Context-Free Grammar for Spanish
+## Description
 
 The spanish language is a romance language that is mainly spoken in Spain and in the Americas. Spanish was originated from the a Vulgar Latin of the Roman soldiers on the Iberian peninsula around the the 3rd century A.D. The language is characterized by its subject-verb-object order, although it can be flexible fue to the inflectional systema. This allows various syntactical constructions without loss of clarity. 
 
@@ -45,7 +45,7 @@ These symbols have been expanded to handle more grammatical structures:
 - AP (Adjective Phrase)
 - AdvP (Adverb Phrase)
 
-## Create a grammar that recognizes Spanish language
+## Models
 ```mathematica
 S (Sentence) -->  NP VP | S Conj S | S PP
 NP (Noun Phrase) --> Det N | Det AP N | Pron | NP PP | NP Conj NP
@@ -77,16 +77,16 @@ Left recursion occurs in a context free grammar when a non-terminal symbol inclu
 symbol in one of its productions, potentially leading to infinite recursion during the parsing, which most 
 parsers can't handle. 
 
-Original:
+##### Original:
 ```mathematica
 S --> S Conj S | NP VP
 ```
-Transformed to eliminate left recursion:
+##### Transformed to eliminate left recursion:
 ```mathematica
 S --> NP VP SP
 SP --> Conj NP VP SP | ε
 ```
-Define Acceptable Strings
+#### Define Acceptable Strings
 The grammar like this should accept strings such as:
 - "el niño alegre corre rápidamente."
 - "él y ella están en la ciudad."
@@ -94,7 +94,7 @@ The grammar like this should accept strings such as:
 - "ella lee lentamente"
 - "la niña lee sobre la mesa"
 
-Invalid strings might include:
+#### Invalid strings might include:
 - "corre el niño rápidamente."
 - "la ciudad sobre el libro"
 - "el niño salta pero es triste"
@@ -159,5 +159,9 @@ while True:
     parse_and_validate(user_input)  # Process the user input through the parse and validate function
 
 ```
-### Analysis
+
+## Tests
+The code can be tested inside the solution by giving sentences, the user can input sentences that can be inside of the CFG, if its possible it will print the tree but if it is not possible the result will print "Sentence is invalid", the program can be tested in the google collab notebook [HERE](https://colab.research.google.com/drive/10hfV0iuOFs6VvefTFEOMoSmOmhtH1mms?usp=sharing)
+
+## Analysis
 The grammar developed for this project is classified as a Context-Free Grammar (CFG), which is positioned at Level 2 in the Chomsky Hierarchy. This classification is strategically chosen to balance complexity and computational efficiency, making it particularly suitable for parsing natural languages like Spanish.
