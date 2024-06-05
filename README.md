@@ -99,15 +99,15 @@ Invalid strings might include:
 - "la ciudad sobre el libro"
 - "el niño salta pero es triste"
 
-###Implementation
-The implementation was made in python, using the library of NLTK that help me making a lot easier the way to present the syntax analisis of the Spanish language, the code is below and also add the google colab so it can be tested with valid or invalid sentences
+### Implementation
+The implementation was made in python, using the library of NLTK. This toolkit simplifies many of the complex aspects of linguistic analysis, making it accessible to efficiently implement and test the intricacies of Spanish syntax.
 
 ```python
 # Import necessary modules from nltk for natural language processing
 import nltk
 from nltk import CFG  # Context-Free Grammar module for defining grammars
 from nltk.tokenize import word_tokenize  # Tokenization function to split text into tokens
-from nltk.tree import Tree  # Import Tree for enhanced visual representation of parse trees
+from nltk.tree import Tree  # Import  Tree for enhanced visual representation of parse trees
 nltk.download('punkt')  # Ensure the 'punkt' tokenizer models are downloaded for tokenization
 
 # Define the grammar using a multi-line string
