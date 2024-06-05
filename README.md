@@ -83,65 +83,82 @@ S --> S Conj S | NP VP
 ```
 Transformed to eliminate left recursion:
 ```mathematica
-S --> NP VP S' 
-S' --> Conj NP VP S' | ε
+S --> NP VP SP
+SP --> Conj NP VP SP | ε
 ```
 Define Acceptable Strings
 The grammar like this should accept strings such as:
-- "El niño alegre corre rápidamente."
-- "Ella cree que la ciudad grande es hermosa."
-- "Él y ella están en la ciudad."
+- "el niño alegre corre rápidamente."
+- "él y ella están en la ciudad."
+- "la niña lee el libro"
+- "ella lee lentamente"
+- "la niña lee sobre la mesa"
 
 Invalid strings might include:
-- "Corre el niño rápidamente." (Incorrect order)
-- "Ella cree rápidamente." (Semantic mismatch)
+- "corre el niño rápidamente."
+- "la ciudad sobre el libro"
+- "el niño salta pero es triste"
 
-
+###Implementation
+The implementation was made in python, using the library of NLTK that help me making a lot easier the way to present the syntax analisis of the Spanish language, the code is below and also add the google colab so it can be tested with valid or invalid sentences
 
 ```python
-# Import the nltk module and CFG class for working with context-free grammars
+# Import necessary modules from nltk for natural language processing
 import nltk
-from nltk import CFG
+from nltk import CFG  # Context-Free Grammar module for defining grammars
+from nltk.tokenize import word_tokenize  # Tokenization function to split text into tokens
+from nltk.tree import Tree  # Import Tree for enhanced visual representation of parse trees
+nltk.download('punkt')  # Ensure the 'punkt' tokenizer models are downloaded for tokenization
 
-# Define a context-free grammar using a multiline string.
+# Define the grammar using a multi-line string
+# This grammar defines how sentences in Spanish can be structured syntactically
 grammar = CFG.fromstring("""
-  S -> 'NP' 'VP' S'
-  S' -> 'Conj' 'NP' 'VP' S' | ''
-  NP -> 'Det' 'N' | 'Det' 'AP' 'N' | 'Pron' | 'NP' 'PP' | 'NP' 'Conj' 'NP'
-  VP -> 'V' | 'V' 'NP' | 'V' 'PP' | 'VP' 'Conj' 'VP'
-  PP -> 'P' 'NP'
-  AP -> 'Adj' | 'Adj' 'AP'
-  Det -> 'el' | 'la' | 'los' | 'las' | 'un' | 'una'
-  N -> 'niño' | 'niña' | 'libro' | 'ciudad'
-  P -> 'en' | 'sobre' | 'bajo' | 'contra'
-  Pron -> 'él' | 'ella' | 'ellos' | 'ellas' | 'lo' | 'la' | 'le'
-  V -> 'corre' | 'salta' | 'piensa' | 'cree' | 'ha'
-  Adj -> 'alegre' | 'triste' | 'grande' | 'pequeño'
-  Adv -> 'rápidamente' | 'lentamente' | 'ayer' | 'hoy'
-  Conj -> 'y' | 'o' | 'pero' | 'porque'
+  S -> NP VP SP 
+  SP -> Conj S |  
+  NP -> Det N | Det AP N | Pron | NP PP | NP Conj NP 
+  VP -> V NP | V PP | VP Conj VP | V Adv | V S | V NP PP  
+  PP -> P NP  
+  AP -> Adj AP | Adj 
+  Det -> 'el' | 'la' | 'los' | 'las' | 'un' | 'una' 
+  N -> 'niño' | 'niña' | 'libro' | 'ciudad' | 'parque' | 'mesa' | 'cine'  
+  P -> 'en' | 'sobre' | 'bajo' | 'contra' | 'al'  
+  Pron -> 'él' | 'ella' | 'ellos' | 'ellas' | 'lo' | 'la' | 'le'  
+  V -> 'corre' | 'salta' | 'piensa' | 'cree' | 'ha' | 'están' | 'van' | 'es'  
+  Adj -> 'alegre' | 'triste' | 'grande' | 'pequeño' | 'interesante'  
+  Adv -> 'rápidamente' | 'lentamente' | 'ayer' | 'hoy'  
+  Conj -> 'y' | 'o' | 'pero' | 'porque' | 'que'  
 """)
 
-# Create a parser using the defined grammar
+# Create a parser instance from the defined grammar using NLTK's ChartParser
 parser = nltk.ChartParser(grammar)
 
-# List of sentences to parse and validate against the grammar
-sentences = [
-    "El niño alegre corre rápidamente",
-    "Ella cree que la ciudad grande es hermosa",
-    "Él y ella están en la ciudad",
-    "Corre el niño rápidamente"
-]
+# Function to parse and validate a sentence according to the defined grammar
+def parse_and_validate(sentence):
+    # Tokenize the input sentence using NLTK's word_tokenize, set to Spanish for correct tokenization of Spanish text
+    tokens = word_tokenize(sentence, language='spanish')
+    parsed = False  # Initialize parsed status as False
+    print("\nSpanish sentence that is parsing:", sentence)  # Notify user which sentence is being parsed
+    try:
+        # Attempt to parse the tokenized sentence, generating parse trees
+        for tree in parser.parse(tokens):
+            tree.pretty_print()  # Visually display the parse tree using pretty_print
+            parsed = True  # Set parsed status to True if at least one parse tree is generated
+    except ValueError as error:
+        print(error)  # Print any errors encountered during parsing
 
-# Validate sentences using the parser
-for sentence in sentences:
-    parsed = False
-    print("\nTrying to parse:", sentence)
-    # Attempt to parse each sentence and generate parse trees
-    for tree in parser.parse(sentence.split()):
-        print(tree)
-        parsed = True
-    # If no parse trees were generated, the sentence is invalid according to the grammar
-    if not parsed:
-        print("Sentence is invalid.")
+    # Provide feedback to the user based on the parsing outcome
+    if parsed:
+        print("The sentence is valid.")  # Sentence conforms to the grammar
+    else:
+        print("Sentence is invalid.")  # No valid parse tree could be generated
+
+# Interactive loop for user to input sentences for parsing
+while True:
+    user_input = input("Please enter a sentence 'exit' to quit: ")  # Prompt for user input
+    if user_input.lower() == 'exit':  # Check if user wants to exit the program
+        break  # Exit the loop and end the program
+    parse_and_validate(user_input)  # Process the user input through the parse and validate function
 
 ```
+###Analysis
+The grammar developed for this project is classified as a Context-Free Grammar (CFG), which is positioned at Level 2 in the Chomsky Hierarchy. This classification is strategically chosen to balance complexity and computational efficiency, making it particularly suitable for parsing natural languages like Spanish.
