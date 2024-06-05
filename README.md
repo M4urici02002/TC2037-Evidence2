@@ -137,7 +137,7 @@ def parse_and_validate(sentence):
     # Tokenize the input sentence using NLTK's word_tokenize, set to Spanish for correct tokenization of Spanish text
     tokens = word_tokenize(sentence, language='spanish')
     parsed = False  # Initialize parsed status as False
-    print("\nSpanish sentence that is parsing:", sentence)  # Notify user which sentence is being parsed
+    print("\nSpanish sentence that is parsing:", sentence)  
     try:
         # Attempt to parse the tokenized sentence, generating parse trees
         for tree in parser.parse(tokens):
@@ -146,7 +146,6 @@ def parse_and_validate(sentence):
     except ValueError as error:
         print(error)  # Print any errors encountered during parsing
 
-    # Provide feedback to the user based on the parsing outcome
     if parsed:
         print("The sentence is valid.")  # Sentence conforms to the grammar
     else:
@@ -160,5 +159,5 @@ while True:
     parse_and_validate(user_input)  # Process the user input through the parse and validate function
 
 ```
-###Analysis
+### Analysis
 The grammar developed for this project is classified as a Context-Free Grammar (CFG), which is positioned at Level 2 in the Chomsky Hierarchy. This classification is strategically chosen to balance complexity and computational efficiency, making it particularly suitable for parsing natural languages like Spanish.
